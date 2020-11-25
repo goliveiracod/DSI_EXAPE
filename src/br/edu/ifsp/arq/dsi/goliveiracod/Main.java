@@ -1,57 +1,70 @@
 package br.edu.ifsp.arq.dsi.goliveiracod;
 
-import br.edu.ifsp.arq.dsi.goliveiracod.dao.ContactDAO;
-import br.edu.ifsp.arq.dsi.goliveiracod.dao.ContactDAOImpl;
-import br.edu.ifsp.arq.dsi.goliveiracod.factory.ConnectionFactory;
+import br.edu.ifsp.arq.dsi.goliveiracod.controller.ContactController;
 import br.edu.ifsp.arq.dsi.goliveiracod.model.Contact;
-
-import java.sql.Connection;
-import java.util.List;
-import java.util.Optional;
 
 public class Main {
 
     public static void main(String[] args) {
-        Connection connection = ConnectionFactory.getInstance().getConnection();
-        ContactDAO contactDAO = new ContactDAOImpl(connection);
-        if (connection != null) {
-//            contactDAO.save(
-//                    new Contact(
-//                            "Thiago"
-//                            , "00000000000"
-//                            , null
-//                            , null
-//                            , null
-//                    )
-//            );
+        ContactController contactController = new ContactController();
 
-//            contactDAO.delete(1);
+        Contact thiago = new Contact(
+                "Thiago"
+                , "00000000000"
+                , null
+                , null
+                , null
+        );
 
-            contactDAO.findById(2).ifPresent(contact -> {
-                contact.setName("Teste");
-                contact.setPrimaryCellphone("1111111111");
-                contactDAO.update(contact);
+        Contact gabriel = new Contact(
+                "Gabriel"
+                , "00000000000"
+                , null
+                , null
+                , null
+        );
+
+        contactController.save(thiago);
+        contactController.save(gabriel);
+
+        System.out.println("All contacts");
+        contactController.findAll().ifPresent(contacts -> {
+            contacts.forEach(contact -> {
+                System.out.println(contact.getName());
             });
+        });
 
-            Optional<List<Contact>> optionalContacts = contactDAO.findAll();
-
-            optionalContacts.ifPresent(contacts -> {
-                contacts.forEach(contact -> {
-                    System.out.println(contact.getName());
-                });
+        System.out.println("All contacts by name");
+        contactController.findByName("bri").ifPresent(contacts -> {
+            contacts.forEach(contact -> {
+                System.out.println(contact.getName());
             });
+        });
 
+        System.out.println("Contact by id");
+        contactController.findById(1).ifPresent(contact -> {
+            System.out.println(contact.getName());
+        });
 
-//            contacts = contactDAO.findByName("GAB");
-//
-//            if (contacts != null){
-//                contacts.forEach(contact -> {
-//                    System.out.println(contact.getName());
-//                });
-//            }
+        // verify if contact exists
+        contactController.findById(1).ifPresent(contact -> {
+            // edit contact
+            contact.setName("Thiago Borges");
+            contact.setPrimaryCellphone("11111111111");
+            contactController.update(contact);
+        });
 
-        }
+        // verify if contact exists
+        contactController.findById(2).ifPresent(contact -> {
+            // delete contact
+            contactController.delete(contact.getId());
+        });
 
-
+        System.out.println("All contacts");
+        contactController.findAll().ifPresent(contacts -> {
+            contacts.forEach(contact -> {
+                System.out.println(contact.getName());
+            });
+        });
     }
 }
