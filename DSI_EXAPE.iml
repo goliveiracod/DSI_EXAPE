@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/jdbc-driver/mariadb-java-client-2.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/mariadb-java-client-2.6.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
