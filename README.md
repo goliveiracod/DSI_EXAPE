@@ -73,6 +73,7 @@ Para buscar um contato pelo nome, informe o nome e clique em **Buscar**.
 O Botão de **Atualizar a tabela**, busca todos os contatos do banco.
 
 Ao clicar em **Remover contato**, é mostrado um input na tela solicitando o id do contato que o usuário deseja remover.
+
 ![Alt text](MainView.png "Ttle")
 
 ##### Tela de Adicionar/Editar contato
