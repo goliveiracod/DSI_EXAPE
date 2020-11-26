@@ -24,8 +24,8 @@ public class AddContactView extends JFrame {
     }
 
     private void initComponents() {
-        JPanel painel = new JPanel();
-        painel.setLayout(new GridBagLayout());
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -35,65 +35,65 @@ public class AddContactView extends JFrame {
         JLabel labelName = new JLabel("Nome: ");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        painel.add(labelName, gridBagConstraints);
+        panel.add(labelName, gridBagConstraints);
 
         textName = new JTextField("");
         textName.setHorizontalAlignment(JTextField.CENTER);
         textName.setColumns(20);
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        painel.add(textName, gridBagConstraints);
+        panel.add(textName, gridBagConstraints);
 
         JLabel labelPrimaryCellphone = new JLabel("Celular principal (*): ");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        painel.add(labelPrimaryCellphone, gridBagConstraints);
+        panel.add(labelPrimaryCellphone, gridBagConstraints);
 
         formattedTextPrimaryCellphone = new JFormattedTextField(HelperView.mascara("(##) #####-####"));
         formattedTextPrimaryCellphone.setHorizontalAlignment(JTextField.CENTER);
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        painel.add(formattedTextPrimaryCellphone, gridBagConstraints);
+        panel.add(formattedTextPrimaryCellphone, gridBagConstraints);
 
         JLabel labelSecondaryCellphone = new JLabel("Celular secundário: ");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        painel.add(labelSecondaryCellphone, gridBagConstraints);
+        panel.add(labelSecondaryCellphone, gridBagConstraints);
 
         formattedTextSecondaryCellphone = new JFormattedTextField(HelperView.mascara("(##) #####-####"));
         formattedTextSecondaryCellphone.setHorizontalAlignment(JTextField.CENTER);
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        painel.add(formattedTextSecondaryCellphone, gridBagConstraints);
+        panel.add(formattedTextSecondaryCellphone, gridBagConstraints);
 
         JLabel labelPrimaryPhone = new JLabel("Telefone primário: ");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        painel.add(labelPrimaryPhone, gridBagConstraints);
+        panel.add(labelPrimaryPhone, gridBagConstraints);
 
         formattedTextPrimaryPhone = new JFormattedTextField(HelperView.mascara("(##) ####-####"));
         formattedTextPrimaryPhone.setHorizontalAlignment(JTextField.CENTER);
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        painel.add(formattedTextPrimaryPhone, gridBagConstraints);
+        panel.add(formattedTextPrimaryPhone, gridBagConstraints);
 
         JLabel labelSecondaryPhone = new JLabel("Telefone seucndário: ");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        painel.add(labelSecondaryPhone, gridBagConstraints);
+        panel.add(labelSecondaryPhone, gridBagConstraints);
 
         formattedTextSecondaryPhone = new JFormattedTextField(HelperView.mascara("(##) ####-####"));
         formattedTextSecondaryPhone.setHorizontalAlignment(JTextField.CENTER);
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        painel.add(formattedTextSecondaryPhone, gridBagConstraints);
+        panel.add(formattedTextSecondaryPhone, gridBagConstraints);
 
         JButton btnSave = new JButton("Salvar contato");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         btnSave.addActionListener(this::save);
-        painel.add(btnSave, gridBagConstraints);
+        panel.add(btnSave, gridBagConstraints);
 
 
         setTitle("Adicionar contato");
@@ -102,7 +102,7 @@ public class AddContactView extends JFrame {
         setVisible(true);
         setLocationRelativeTo(null);
         setLayout(new GridBagLayout());
-        add(painel);
+        add(panel);
     }
 
     private void save(ActionEvent actionEvent) {

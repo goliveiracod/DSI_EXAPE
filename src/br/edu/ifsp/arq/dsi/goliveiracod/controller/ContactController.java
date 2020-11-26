@@ -2,7 +2,6 @@ package br.edu.ifsp.arq.dsi.goliveiracod.controller;
 
 import br.edu.ifsp.arq.dsi.goliveiracod.dao.ContactDAO;
 import br.edu.ifsp.arq.dsi.goliveiracod.dao.ContactDAOImpl;
-import br.edu.ifsp.arq.dsi.goliveiracod.factory.ConnectionFactory;
 import br.edu.ifsp.arq.dsi.goliveiracod.model.Contact;
 
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.Optional;
 public class ContactController {
     private final ContactDAO contactDAO;
 
-    public ContactController() {
-        this.contactDAO = new ContactDAOImpl(ConnectionFactory.getInstance().getConnection());
+    public ContactController(ContactDAOImpl contactDAO) {
+        this.contactDAO = contactDAO;
     }
 
     public void save(Contact contact) {
