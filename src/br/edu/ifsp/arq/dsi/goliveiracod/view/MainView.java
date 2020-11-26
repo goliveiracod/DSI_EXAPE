@@ -34,12 +34,12 @@ public class MainView extends JFrame {
         menuOption.setMnemonic('O');
         menuBar.add(menuOption);
 
-        JMenuItem menuAddContact = new JMenuItem("Adicionar contado");
-        menuAddContact.addActionListener(actionEvent -> new AddContactView(new ContactController(
+        JMenuItem menuAddAndEditContact = new JMenuItem("Adicionar/editar contato");
+        menuAddAndEditContact.addActionListener(actionEvent -> new AddAndEditContactView(new ContactController(
                 new ContactDAOImpl(ConnectionFactory.getInstance().getConnection())
         )));
-        menuAddContact.setMnemonic('c');
-        menuOption.add(menuAddContact);
+        menuAddAndEditContact.setMnemonic('c');
+        menuOption.add(menuAddAndEditContact);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
