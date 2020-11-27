@@ -11,3 +11,6 @@ CREATE TABLE contacts (
   secondary_phone VARCHAR(20),
   CONSTRAINT id_pk PRIMARY KEY (id)
 );
+
+ALTER TABLE contacts ADD COLUMN address varchar(500);
+

@@ -53,6 +53,9 @@ Após subir o banco, efetue a criação das tabelas:
   CONSTRAINT id_pk PRIMARY KEY (id)
 );`
 
+`ALTER TABLE contacts ADD COLUMN address varchar(500);
+`
+
 Caso não opte pelo docker, efetue a criação da database manualmente:
 
 `CREATE DATABASE dsi_exape;`

@@ -20,8 +20,8 @@ public class ContactDAOImpl implements ContactDAO {
 
     @Override
     public void save(Contact contact) {
-        String sql = "INSERT INTO contacts (name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone)" +
-                " VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO contacts (name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone, address)" +
+                " VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, contact.getName());
@@ -29,6 +29,7 @@ public class ContactDAOImpl implements ContactDAO {
             pstm.setString(3, contact.getSecondaryCellphone());
             pstm.setString(4, contact.getPrimaryPhone());
             pstm.setString(5, contact.getSecondaryPhone());
+            pstm.setString(6, contact.getAddress());
 
             pstm.execute();
         } catch (SQLException sqlException) {
@@ -38,7 +39,7 @@ public class ContactDAOImpl implements ContactDAO {
 
     @Override
     public Optional<List<Contact>> findAll() {
-        String sql = "SELECT id, name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone FROM contacts";
+        String sql = "SELECT id, name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone, address FROM contacts";
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             return getContacts(pstm);
@@ -50,7 +51,7 @@ public class ContactDAOImpl implements ContactDAO {
 
     @Override
     public Optional<List<Contact>> findByName(String name) {
-        String sql = "SELECT id, name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone FROM contacts " +
+        String sql = "SELECT id, name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone, address FROM contacts " +
                 "WHERE name LIKE ?";
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
@@ -64,7 +65,7 @@ public class ContactDAOImpl implements ContactDAO {
 
     @Override
     public Optional<Contact> findById(Integer id) {
-        String sql = "SELECT id, name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone FROM contacts " +
+        String sql = "SELECT id, name, primary_cellphone, secondary_cellphone, primary_phone, secondary_phone, address FROM contacts " +
                 "WHERE id = ?";
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
@@ -81,6 +82,7 @@ public class ContactDAOImpl implements ContactDAO {
                         , rst.getString(4)
                         , rst.getString(5)
                         , rst.getString(6)
+                        , rst.getString(7)
                 ));
             }
 
@@ -94,14 +96,15 @@ public class ContactDAOImpl implements ContactDAO {
     public void update(Contact contact) {
         try (PreparedStatement pstm = connection.prepareStatement("UPDATE contacts " +
                 "SET name = ?, primary_cellphone = ?, secondary_cellphone = ?, primary_phone = ?, " +
-                "secondary_phone = ? WHERE id = ?")) {
+                "secondary_phone = ?, address = ? WHERE id = ?")) {
 
             pstm.setString(1, contact.getName());
             pstm.setString(2, contact.getPrimaryCellphone());
             pstm.setString(3, contact.getSecondaryCellphone());
             pstm.setString(4, contact.getPrimaryPhone());
             pstm.setString(5, contact.getSecondaryPhone());
-            pstm.setInt(6, contact.getId());
+            pstm.setString(6, contact.getAddress());
+            pstm.setInt(7, contact.getId());
 
             pstm.execute();
 
@@ -133,6 +136,7 @@ public class ContactDAOImpl implements ContactDAO {
                         , rst.getString(4)
                         , rst.getString(5)
                         , rst.getString(6)
+                        , rst.getString(7)
                 );
                 contacts.add(contact);
             }

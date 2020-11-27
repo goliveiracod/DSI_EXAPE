@@ -16,7 +16,15 @@ public class MainView extends JFrame {
     private final ContactController contactController;
 
     private final String[] column =
-            {"ID", "NAME", "PRIMARY CELLPHONE", "SECONDARY_CELLPHONE", "PRIMARY PHONE", "SECONDARY PHONE"};
+            {
+                    "ID"
+                    , "NOME"
+                    , "CELULAR PRINCIPAL"
+                    , "CELULAR SECUNDÁRIO"
+                    , "TELEFONE PRINCIPAL"
+                    , "TELEFONE SECUNDÁRIO"
+                    , "ENDEREÇO"
+            };
 
     private JTextField textName;
     private DefaultTableModel modelTableContacts;
@@ -94,7 +102,7 @@ public class MainView extends JFrame {
         panel.add(panelBorderLayout, gridBagConstraints);
 
         setTitle("Projeto prático");
-        setSize(480, 540);
+        setSize(480, 560);
         setJMenuBar(menuBar);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -139,6 +147,7 @@ public class MainView extends JFrame {
                     , contact.getSecondaryCellphone()
                     , contact.getPrimaryPhone()
                     , contact.getSecondaryPhone()
+                    , contact.getAddress()
             };
             data.add(row);
         });

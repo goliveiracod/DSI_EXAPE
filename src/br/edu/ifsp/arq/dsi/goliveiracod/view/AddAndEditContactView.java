@@ -21,9 +21,11 @@ public class AddAndEditContactView extends JFrame {
     private JFormattedTextField formattedTextSecondaryCellphone;
     private JFormattedTextField formattedTextPrimaryPhone;
     private JFormattedTextField formattedTextSecondaryPhone;
+    private JTextField textAddress;
     private JRadioButton radioBtnAdd;
     private JRadioButton radioBtnEdit;
     private JButton btnSave;
+    private JButton btnSearch;
 
     public AddAndEditContactView(ContactController contactController) {
         this.contactController = contactController;
@@ -85,7 +87,7 @@ public class AddAndEditContactView extends JFrame {
         gridBagConstraints.gridy = 3;
         panel.add(formattedTextPrimaryPhone, gridBagConstraints);
 
-        JLabel labelSecondaryPhone = new JLabel("Telefone seucndário: ");
+        JLabel labelSecondaryPhone = new JLabel("Telefone secundário: ");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         panel.add(labelSecondaryPhone, gridBagConstraints);
@@ -96,9 +98,20 @@ public class AddAndEditContactView extends JFrame {
         gridBagConstraints.gridy = 4;
         panel.add(formattedTextSecondaryPhone, gridBagConstraints);
 
-        btnSave = new JButton("Salvar contato");
+        JLabel labelAddress = new JLabel("Endereço: ");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
+        panel.add(labelAddress, gridBagConstraints);
+
+        textAddress = new JTextField("");
+        textAddress.setHorizontalAlignment(JTextField.CENTER);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        panel.add(textAddress, gridBagConstraints);
+
+        btnSave = new JButton("Salvar contato");
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 2;
         btnSave.addActionListener(this::save);
         panel.add(btnSave, gridBagConstraints);
@@ -117,7 +130,7 @@ public class AddAndEditContactView extends JFrame {
         panelFlowLayoutOptions.add(radioBtnEdit);
 
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 2;
         panel.add(panelFlowLayoutOptions, gridBagConstraints);
 
@@ -130,18 +143,18 @@ public class AddAndEditContactView extends JFrame {
         textId.setColumns(10);
         panelFlowLayoutSearchContact.add(textId);
 
-        JButton btnSearch = new JButton("Buscar contato");
+        btnSearch = new JButton("Buscar contato");
         btnSearch.setPreferredSize(new Dimension(150, 18));
         btnSearch.addActionListener(this::searchById);
         panelFlowLayoutSearchContact.add(btnSearch);
 
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 2;
         panel.add(panelFlowLayoutSearchContact, gridBagConstraints);
 
         setTitle("Adicionar/editar contato");
-        setSize(400, 220);
+        setSize(400, 250);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -150,18 +163,20 @@ public class AddAndEditContactView extends JFrame {
     }
 
     private void save(ActionEvent actionEvent) {
+        String id = textId.getText();
         String name = textName.getText();
         String primaryCellphone = (String) formattedTextPrimaryCellphone.getValue();
         String secondaryCellphone = (String) formattedTextSecondaryCellphone.getValue();
         String primaryPhone = (String) formattedTextPrimaryPhone.getValue();
         String secondaryPhone = (String) formattedTextSecondaryPhone.getValue();
+        String address = textAddress.getText();
 
         try {
-            validateFields(name, primaryCellphone);
+            validateFields(name, primaryCellphone, id, address);
 
             if (radioBtnAdd.isSelected()) {
                 this.contactController.save(
-                        new Contact(name, primaryCellphone, secondaryCellphone, primaryPhone, secondaryPhone)
+                        new Contact(name, primaryCellphone, secondaryCellphone, primaryPhone, secondaryPhone, address)
                 );
                 HelperView.mensagemInformativa("Contato salvo com sucesso!", "Contato adicionado");
             } else {
@@ -173,6 +188,7 @@ public class AddAndEditContactView extends JFrame {
                                 , secondaryCellphone
                                 , primaryPhone
                                 , secondaryPhone
+                                , address
                         )
                 );
                 HelperView.mensagemInformativa("Contato editado com sucesso!", "Contato editado");
@@ -187,14 +203,15 @@ public class AddAndEditContactView extends JFrame {
 
     }
 
-    private void validateFields(String name, String primaryCellphone) {
+    private void validateFields(String name, String primaryCellphone, String id, String address) {
         if (name != null && name.length() < 3)
-            throw new ValidateFieldException("Insira um com 3 ou mais characteres.");
+            throw new ValidateFieldException("Insira um nome com 3 ou mais letras.");
         else if (primaryCellphone == null)
             throw new ValidateFieldException("O celular principal não pode ficar em branco.");
-        else if (textId.isEnabled() && textId.getText() == null) {
+        else if (radioBtnEdit.isSelected() && id == null) {
             throw new ValidateFieldException("Digite um id para prosseguir com a edição");
-        }
+        } else if (address != null && address.length() < 11)
+            throw new ValidateFieldException("Para o endereço ser válido ele precisar ter mais que 10 letras");
     }
 
     private void updateUI(int option) {
@@ -216,15 +233,11 @@ public class AddAndEditContactView extends JFrame {
                 formattedTextSecondaryPhone.setEnabled(true);
                 formattedTextSecondaryPhone.setText("");
                 formattedTextSecondaryPhone.setValue("");
+                textAddress.setEnabled(true);
+                textAddress.setText("");
                 btnSave.setEnabled(true);
+                btnSearch.setEnabled(false);
                 radioBtnAdd.setSelected(true);
-
-                textId.setText("");
-                textName.setText("");
-                formattedTextPrimaryCellphone.setText("");
-                formattedTextSecondaryCellphone.setText("");
-                formattedTextPrimaryPhone.setText("");
-                formattedTextSecondaryPhone.setText("");
                 break;
             case 2:
                 textId.setEnabled(true);
@@ -233,7 +246,9 @@ public class AddAndEditContactView extends JFrame {
                 formattedTextSecondaryCellphone.setEnabled(false);
                 formattedTextPrimaryPhone.setEnabled(false);
                 formattedTextSecondaryPhone.setEnabled(false);
+                textAddress.setEnabled(false);
                 btnSave.setEnabled(false);
+                btnSearch.setEnabled(true);
                 radioBtnEdit.setSelected(true);
                 break;
             case 3:
@@ -243,7 +258,9 @@ public class AddAndEditContactView extends JFrame {
                 formattedTextSecondaryCellphone.setEnabled(true);
                 formattedTextPrimaryPhone.setEnabled(true);
                 formattedTextSecondaryPhone.setEnabled(true);
+                textAddress.setEnabled(true);
                 btnSave.setEnabled(true);
+                btnSearch.setEnabled(false);
                 radioBtnEdit.setSelected(true);
                 break;
         }
@@ -252,23 +269,28 @@ public class AddAndEditContactView extends JFrame {
     private void searchById(ActionEvent actionEvent) {
         updateUI(3);
 
-        Optional<Contact> contactOptional = contactController.findById(Integer.valueOf(textId.getText()));
+        if (textId.getText().isEmpty()) {
+            HelperView.mensagemDeErro("Digite um id para efetuar a busca", "Erro");
+        } else  {
+            Optional<Contact> contactOptional = contactController.findById(Integer.valueOf(textId.getText()));
 
-        if (contactOptional.isPresent()) {
-            contact = contactOptional.get();
-            textId.setText(String.valueOf(contact.getId()));
-            textName.setText(contact.getName());
-            formattedTextPrimaryCellphone.setText(contact.getPrimaryCellphone());
-            formattedTextPrimaryCellphone.setValue(contact.getPrimaryCellphone());
-            formattedTextSecondaryCellphone.setText(contact.getSecondaryCellphone());
-            formattedTextSecondaryCellphone.setValue(contact.getSecondaryCellphone());
-            formattedTextPrimaryPhone.setText(contact.getPrimaryPhone());
-            formattedTextPrimaryPhone.setValue(contact.getPrimaryPhone());
-            formattedTextSecondaryPhone.setText(contact.getSecondaryPhone());
-            formattedTextSecondaryPhone.setValue(contact.getSecondaryPhone());
-        } else {
-            updateUI(2);
-            HelperView.mensagemDeErro("Id não encontrado", "Erro");
+            if (contactOptional.isPresent()) {
+                contact = contactOptional.get();
+                textId.setText(String.valueOf(contact.getId()));
+                textName.setText(contact.getName());
+                formattedTextPrimaryCellphone.setText(contact.getPrimaryCellphone());
+                formattedTextPrimaryCellphone.setValue(contact.getPrimaryCellphone());
+                formattedTextSecondaryCellphone.setText(contact.getSecondaryCellphone());
+                formattedTextSecondaryCellphone.setValue(contact.getSecondaryCellphone());
+                formattedTextPrimaryPhone.setText(contact.getPrimaryPhone());
+                formattedTextPrimaryPhone.setValue(contact.getPrimaryPhone());
+                formattedTextSecondaryPhone.setText(contact.getSecondaryPhone());
+                formattedTextSecondaryPhone.setValue(contact.getSecondaryPhone());
+                textAddress.setText(contact.getAddress());
+            } else {
+                updateUI(2);
+                HelperView.mensagemDeErro("Id não encontrado", "Erro");
+            }
         }
     }
 

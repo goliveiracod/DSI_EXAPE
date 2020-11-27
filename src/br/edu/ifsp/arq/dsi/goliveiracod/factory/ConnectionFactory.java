@@ -6,9 +6,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-    private final MariaDbDataSource mariaDbDataSource;
-
     private static ConnectionFactory connectionFactory;
+    private final MariaDbDataSource mariaDbDataSource;
 
     private ConnectionFactory() {
         mariaDbDataSource =
